@@ -1,14 +1,15 @@
 package com.akasa_air_Vishnu_Nair.akasa_air_backend.service;
 
 import com.akasa_air_Vishnu_Nair.akasa_air_backend.model.Cart;
-import com.akasa_air_Vishnu_Nair.akasa_air_backend.model.CartItem; // Import CartItem
-import com.akasa_air_Vishnu_Nair.akasa_air_backend.model.Item; // Import Item
+import com.akasa_air_Vishnu_Nair.akasa_air_backend.model.CartItem;
+import com.akasa_air_Vishnu_Nair.akasa_air_backend.model.Item;
 import com.akasa_air_Vishnu_Nair.akasa_air_backend.repository.CartRepository;
-import com.akasa_air_Vishnu_Nair.akasa_air_backend.repository.ItemRepository; // Import ItemRepository
+import com.akasa_air_Vishnu_Nair.akasa_air_backend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CartService {
@@ -17,76 +18,69 @@ public class CartService {
     private CartRepository cartRepository;
 
     @Autowired
-    private ItemRepository itemRepository; // To fetch item details
-
-
-
+    private ItemRepository itemRepository;
 
     public Cart addToCart(String userEmail, String itemId, int quantity) {
         Cart cart = cartRepository.findByUserEmail(userEmail);
 
-        // If cart does not exist, create a new one
         if (cart == null) {
             cart = new Cart();
             cart.setUserEmail(userEmail);
-            cart.setItems(new ArrayList<>()); // Initialize items list
+            cart.setItems(new ArrayList<>());
         }
 
-        // Fetch the item from the repository using itemId
-        Item item = itemRepository.findById(itemId).orElse(null); // Get the item details
+        Item item = itemRepository.findById(itemId).orElse(null);
 
-        // Check if the item exists
         if (item != null) {
-            // Check if the item is already in the cart
             boolean itemExists = false;
             for (CartItem cartItem : cart.getItems()) {
                 if (cartItem.getItemId().equals(itemId)) {
-                    cartItem.setQuantity(cartItem.getQuantity() + quantity); // Update quantity if item exists
+                    cartItem.setQuantity(cartItem.getQuantity() + quantity);
                     itemExists = true;
                     break;
                 }
             }
 
-            // If the item does not exist in the cart, create a new CartItem
             if (!itemExists) {
-                CartItem cartItem = new CartItem(itemId, quantity);
-                cart.getItems().add(cartItem); // Add the new CartItem to the cart's items
+                // Fix: Change the order of parameters to match the CartItem constructor
+                CartItem cartItem = new CartItem(itemId, quantity, item.getName(), item.getPrice());
+                cart.getItems().add(cartItem);
             }
         } else {
-            System.out.println("Item not found for itemId: " + itemId);
+            throw new RuntimeException("Item not found for itemId: " + itemId);
         }
 
-        // Log the cart state before saving
-        System.out.println("Cart before saving: " + cart);
-
-        // Save the cart and return it
-        Cart savedCart = cartRepository.save(cart);
-
-        // Log the saved cart
-        System.out.println("Saved Cart: " + savedCart);
-
-        return savedCart; // Return the saved cart
+        return cartRepository.save(cart);
     }
 
-
-    // Method to retrieve the cart by user's email
     public Cart getCartByUserEmail(String email) {
-        return cartRepository.findByUserEmail(email);
+        Cart cart = cartRepository.findByUserEmail(email);
+        if (cart != null) {
+            List<CartItem> updatedItems = new ArrayList<>();
+            for (CartItem cartItem : cart.getItems()) {
+                Item item = itemRepository.findById(cartItem.getItemId()).orElse(null);
+                if (item != null) {
+                    cartItem.setName(item.getName());
+                    cartItem.setPrice(item.getPrice());
+                }
+                updatedItems.add(cartItem);
+            }
+            cart.setItems(updatedItems);
+        }
+        return cart;
     }
 
-    // Method to update the cart (if necessary)
     public Cart updateCart(Cart cart) {
         return cartRepository.save(cart);
     }
 
-    // Method to remove an item from the cart
     public void removeFromCart(String email, String itemId) {
         Cart cart = cartRepository.findByUserEmail(email);
         if (cart != null) {
-            cart.getItems().removeIf(item -> item.getItemId().equals(itemId)); // Assuming your CartItem class has a getItemId() method
-            cartRepository.save(cart); // Save the updated cart
+            cart.getItems().removeIf(item -> item.getItemId().equals(itemId));
+            cartRepository.save(cart);
         } else {
-            System.out.println("Cart not found for email: " + email);
+            throw new RuntimeException("Cart not found for email: " + email);
         }
     }
 }

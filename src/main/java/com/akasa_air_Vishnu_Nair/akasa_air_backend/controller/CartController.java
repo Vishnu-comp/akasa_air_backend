@@ -16,14 +16,9 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/add")
-    public ResponseEntity<Cart> addToCart(@Valid @RequestBody CartItem cartItem) {
-        // Ensure userEmail is set for the cartItem
-        if (cartItem.getUserEmail() == null) {
-            return ResponseEntity.badRequest().body(null); // or throw a custom exception
-        }
-
-        Cart updatedCart = cartService.addToCart(cartItem.getUserEmail(), cartItem.getItemId(), cartItem.getQuantity());
+    @PostMapping("/add/{userEmail}")
+    public ResponseEntity<Cart> addToCart(@PathVariable String userEmail, @Valid @RequestBody CartItem cartItem) {
+        Cart updatedCart = cartService.addToCart(userEmail, cartItem.getItemId(), cartItem.getQuantity());
         return ResponseEntity.ok(updatedCart);
     }
 
