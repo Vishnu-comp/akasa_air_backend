@@ -12,19 +12,20 @@ public class Item {
     private String category;
     private double price;
     private int stock;
-    private int quantity; // New quantity field
+    private int quantity;
+    private String imageUrl; // New field for image URL
 
-    // Constructor
-    public Item(String id, String name, String category, double price, int stock, int quantity) {
+    // Updated constructor
+    public Item(String id, String name, String category, double price, int stock, int quantity, String imageUrl) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.price = price;
         this.stock = stock;
-        this.quantity = quantity; // Initialize quantity
+        this.quantity = quantity;
+        this.imageUrl = imageUrl;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -66,10 +67,18 @@ public class Item {
     }
 
     public int getQuantity() {
-        return quantity; // Getter for quantity
+        return quantity;
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity; // Setter for quantity
+        this.quantity = quantity;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

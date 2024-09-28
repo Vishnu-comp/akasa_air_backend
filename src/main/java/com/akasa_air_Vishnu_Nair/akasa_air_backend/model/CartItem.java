@@ -5,13 +5,15 @@ public class CartItem {
     private int quantity;
     private String name;
     private double price;
+    private String imageUrl; // Add image URL field
 
-    // Constructor
-    public CartItem(String itemId, int quantity, String name, double price) {
+    // Constructor with imageUrl
+    public CartItem(String itemId, int quantity, String name, double price, String imageUrl) {
         this.itemId = itemId;
         this.quantity = quantity;
         this.name = name;
         this.price = price;
+        this.imageUrl = imageUrl;
     }
 
     // Getters and setters
@@ -45,5 +47,13 @@ public class CartItem {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

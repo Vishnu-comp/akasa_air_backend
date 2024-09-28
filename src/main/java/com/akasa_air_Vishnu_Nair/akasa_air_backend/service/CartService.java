@@ -20,6 +20,40 @@ public class CartService {
     @Autowired
     private ItemRepository itemRepository;
 
+//    public Cart addToCart(String userEmail, String itemId, int quantity) {
+//        Cart cart = cartRepository.findByUserEmail(userEmail);
+//
+//        if (cart == null) {
+//            cart = new Cart();
+//            cart.setUserEmail(userEmail);
+//            cart.setItems(new ArrayList<>());
+//        }
+//
+//        Item item = itemRepository.findById(itemId).orElse(null);
+//
+//        if (item != null) {
+//            boolean itemExists = false;
+//            for (CartItem cartItem : cart.getItems()) {
+//                if (cartItem.getItemId().equals(itemId)) {
+//                    cartItem.setQuantity(cartItem.getQuantity() + quantity);
+//                    itemExists = true;
+//                    break;
+//                }
+//            }
+//
+//            if (!itemExists) {
+//                // Fix: Change the order of parameters to match the CartItem constructor
+//                CartItem cartItem = new CartItem(itemId, quantity, item.getName(), item.getPrice());
+//                cart.getItems().add(cartItem);
+//            }
+//        } else {
+//            throw new RuntimeException("Item not found for itemId: " + itemId);
+//        }
+//
+//        return cartRepository.save(cart);
+//    }
+
+
     public Cart addToCart(String userEmail, String itemId, int quantity) {
         Cart cart = cartRepository.findByUserEmail(userEmail);
 
@@ -42,8 +76,8 @@ public class CartService {
             }
 
             if (!itemExists) {
-                // Fix: Change the order of parameters to match the CartItem constructor
-                CartItem cartItem = new CartItem(itemId, quantity, item.getName(), item.getPrice());
+                // Include the imageUrl from the item
+                CartItem cartItem = new CartItem(itemId, quantity, item.getName(), item.getPrice(), item.getImageUrl());
                 cart.getItems().add(cartItem);
             }
         } else {
@@ -52,6 +86,8 @@ public class CartService {
 
         return cartRepository.save(cart);
     }
+
+
 
     public Cart getCartByUserEmail(String email) {
         Cart cart = cartRepository.findByUserEmail(email);

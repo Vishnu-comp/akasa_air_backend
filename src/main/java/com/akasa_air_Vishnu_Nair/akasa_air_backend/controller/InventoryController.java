@@ -1,4 +1,3 @@
-// File: InventoryController.java
 package com.akasa_air_Vishnu_Nair.akasa_air_backend.controller;
 
 import com.akasa_air_Vishnu_Nair.akasa_air_backend.model.Item;
@@ -36,5 +35,15 @@ public class InventoryController {
     public ResponseEntity<Void> deleteItem(@PathVariable String id) {
         itemService.deleteItem(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Item> getItemById(@PathVariable String id) {
+        Item item = itemService.getItemById(id);
+        if (item != null) {
+            return ResponseEntity.ok(item);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

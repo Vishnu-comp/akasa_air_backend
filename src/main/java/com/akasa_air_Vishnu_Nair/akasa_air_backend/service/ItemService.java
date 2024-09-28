@@ -28,4 +28,9 @@ public class ItemService {
     public void deleteItem(String id) {
         itemRepository.deleteById(id);
     }
+
+    // New method to get item by ID
+    public Item getItemById(String id) {
+        return itemRepository.findById(id).orElse(null);
+    }
 }
