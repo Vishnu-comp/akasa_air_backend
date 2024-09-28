@@ -9,18 +9,19 @@ public class Item {
     @Id
     private String id;
     private String name;
-    private String category; // e.g., Fruit, Vegetable, Non-veg, Breads
+    private String category;
     private double price;
-    private int stock; // Available quantity
+    private int stock;
+    private int quantity; // New quantity field
 
-    // Constructors
-    public Item() {}
-
-    public Item(String name, String category, double price, int stock) {
+    // Constructor
+    public Item(String id, String name, String category, double price, int stock, int quantity) {
+        this.id = id;
         this.name = name;
         this.category = category;
         this.price = price;
         this.stock = stock;
+        this.quantity = quantity; // Initialize quantity
     }
 
     // Getters and Setters
@@ -62,5 +63,13 @@ public class Item {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public int getQuantity() {
+        return quantity; // Getter for quantity
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity; // Setter for quantity
     }
 }

@@ -1,6 +1,5 @@
+// File: User.java
 package com.akasa_air_Vishnu_Nair.akasa_air_backend.model;
-
-
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,13 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
     @Id
-    private String id;
     private String email;
-    private String password; // Store hashed password
-    private String fullName;
-
-    // Constructors
-    public User() {}
+    private String password;
 
     public User(String email, String password, String fullName) {
         this.email = email;
@@ -23,13 +17,10 @@ public class User {
         this.fullName = fullName;
     }
 
-    // Getters and Setters
-    public String getId() {
-        return id;
-    }
+    private String fullName;
 
-    public void setId(String id) {
-        this.id = id;
+    public User() {
+
     }
 
     public String getEmail() {
@@ -55,4 +46,5 @@ public class User {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
+// Constructors, getters, and setters
 }

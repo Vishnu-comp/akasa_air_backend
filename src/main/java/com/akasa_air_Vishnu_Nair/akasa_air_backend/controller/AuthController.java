@@ -1,3 +1,4 @@
+// File: AuthController.java
 package com.akasa_air_Vishnu_Nair.akasa_air_backend.controller;
 
 import com.akasa_air_Vishnu_Nair.akasa_air_backend.dto.LoginRequest;
@@ -10,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -27,41 +31,20 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<User> registerUser(@Valid @RequestBody UserDTO userDTO) {
         User user = authService.registerUser(userDTO);
-        return ResponseEntity.ok(user); // Return ResponseEntity containing the User object
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")
-    // public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
-    //     authenticationManager.authenticate(
-    //             new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-    //     final UserDetails userDetails = authService.loadUserByUsername(loginRequest.getEmail());
-    //     final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String jwt = jwtUtil.generateToken(userDetails.getUsername());
 
-    //     // Get userId from userDetails or load user from the database
-    //     User user = authService.getUserByEmail(loginRequest.getEmail());
-
-    //     // Create a response object that includes userId and JWT
-    //     LoginResponse loginResponse = new LoginResponse(user.getId(), jwt);
-
-    //     return ResponseEntity.ok(loginResponse); // Return ResponseEntity containing userId and JWT token
-    // }
-public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
-    authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
-    final UserDetails userDetails = authService.loadUserByUsername(loginRequest.getEmail());
-    final String jwt = jwtUtil.generateToken(userDetails.getUsername()); // This now returns the email
-
-    // Get user from user details or load user from the database
-    User user = authService.getUserByEmail(loginRequest.getEmail());
-
-    // Create a response object that includes userId and JWT
-    LoginResponse loginResponse = new LoginResponse(user.getEmail(), jwt);
-
-    return ResponseEntity.ok(loginResponse); // Return ResponseEntity containing userId and JWT token
-}
-
+        LoginResponse loginResponse = new LoginResponse(userDetails.getUsername(), jwt);
+        return ResponseEntity.ok(loginResponse);
+    }
 }

@@ -10,18 +10,11 @@ public class Cart {
 
     @Id
     private String id;
-    private String userEmail; // Change userId to userEmail
-    private List<CartItem> items; // List of items in the cart
+    private String userEmail;
+    private List<CartItem> items;
 
-    // Constructors
     public Cart() {}
 
-    public Cart(String userEmail, List<CartItem> items) {
-        this.userEmail = userEmail;
-        this.items = items;
-    }
-
-    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -43,6 +36,12 @@ public class Cart {
     }
 
     public void setItems(List<CartItem> items) {
+        this.items = items;
+    }
+
+    public Cart(String id, String userEmail, List<CartItem> items) {
+        this.id = id;
+        this.userEmail = userEmail;
         this.items = items;
     }
 }

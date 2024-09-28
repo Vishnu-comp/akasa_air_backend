@@ -4,26 +4,26 @@ import java.util.List;
 
 public class OrderRequest {
 
-    private String userId;
+    private String userEmail; // Changed from userId to userEmail
     private List<String> itemIds; // List of item IDs in the order
     private double totalAmount;
 
     // Constructors
     public OrderRequest() {}
 
-    public OrderRequest(String userId, List<String> itemIds, double totalAmount) {
-        this.userId = userId;
+    public OrderRequest(String userEmail, List<String> itemIds, double totalAmount) {
+        this.userEmail = userEmail; // Updated constructor
         this.itemIds = itemIds;
         this.totalAmount = totalAmount;
     }
 
     // Getters and Setters
-    public String getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail; // Updated getter
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail; // Updated setter
     }
 
     public List<String> getItemIds() {
@@ -42,4 +42,3 @@ public class OrderRequest {
         this.totalAmount = totalAmount;
     }
 }
-

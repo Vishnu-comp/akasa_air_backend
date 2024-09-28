@@ -1,12 +1,13 @@
+// File: InventoryController.java
 package com.akasa_air_Vishnu_Nair.akasa_air_backend.controller;
-
-
 
 import com.akasa_air_Vishnu_Nair.akasa_air_backend.model.Item;
 import com.akasa_air_Vishnu_Nair.akasa_air_backend.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,12 +18,23 @@ public class InventoryController {
     private ItemService itemService;
 
     @GetMapping("/all")
-    public List<Item> getAllItems() {
-        return itemService.getAllItems();
+    public ResponseEntity<List<Item>> getAllItems() {
+        return ResponseEntity.ok(itemService.getAllItems());
     }
 
     @PostMapping("/add")
-    public Item addItem(@RequestBody Item item) {
-        return itemService.addItem(item);
+    public ResponseEntity<Item> addItem(@Valid @RequestBody Item item) {
+        return ResponseEntity.ok(itemService.addItem(item));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Item> updateItem(@Valid @RequestBody Item item) {
+        return ResponseEntity.ok(itemService.updateItem(item));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteItem(@PathVariable String id) {
+        itemService.deleteItem(id);
+        return ResponseEntity.ok().build();
     }
 }

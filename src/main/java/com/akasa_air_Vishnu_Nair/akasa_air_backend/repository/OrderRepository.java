@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends MongoRepository<Order, String> {
-    List<Order> findByUserId(String userId); // Custom query method to find orders by user ID
+    List<Order> findByUserEmail(String userEmail); // Custom query method to find orders by user email
 }
 

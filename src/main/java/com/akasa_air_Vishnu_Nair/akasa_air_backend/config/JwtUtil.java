@@ -1,6 +1,5 @@
 package com.akasa_air_Vishnu_Nair.akasa_air_backend.config;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,13 +15,19 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    public String extractUsername(String token) {
+    // Remove JWT_TOKEN_VALIDITY since we won't use expiration
+    // @Value("${jwt.expiration}")
+    // private long JWT_TOKEN_VALIDITY;
+
+    // Extract username (email) from token
+    public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
+    // Remove extractExpiration method
+    // public Date extractExpiration(String token) {
+    //     return extractClaim(token, Claims::getExpiration);
+    // }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
@@ -30,24 +35,33 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
+    // Remove isTokenExpired method
+    // private Boolean isTokenExpired(String token) {
+    //     return extractExpiration(token).before(new Date());
+    // }
 
-    public String generateToken(String username) {
-        return Jwts.builder().setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+    // Generate JWT token without expiration
+    public String generateToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                // Remove expiration setting
+                // .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
 
-    public Boolean validateToken(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    // Validate token without expiration check
+    public Boolean validateToken(String token, String email) {
+        final String extractedEmail = extractEmail(token);
+        // Remove expiration validation
+        // return (extractedEmail.equals(email) && !isTokenExpired(token));
+        return extractedEmail.equals(email);
     }
 }
-

@@ -1,6 +1,5 @@
 package com.akasa_air_Vishnu_Nair.akasa_air_backend.service;
 
-
 import com.akasa_air_Vishnu_Nair.akasa_air_backend.model.Item;
 import com.akasa_air_Vishnu_Nair.akasa_air_backend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +20,12 @@ public class ItemService {
     public Item addItem(Item item) {
         return itemRepository.save(item);
     }
-}
 
+    public Item updateItem(Item item) {
+        return itemRepository.save(item);
+    }
+
+    public void deleteItem(String id) {
+        itemRepository.deleteById(id);
+    }
+}

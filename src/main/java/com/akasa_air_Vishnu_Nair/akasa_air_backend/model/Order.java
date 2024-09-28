@@ -1,6 +1,5 @@
+// File: Order.java
 package com.akasa_air_Vishnu_Nair.akasa_air_backend.model;
-
-
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,24 +12,21 @@ public class Order {
 
     @Id
     private String id;
-    private String userId; // Reference to the user
-    private List<String> itemIds; // List of item IDs in the order
+    private String userEmail;
+    private List<String> itemIds;
     private double totalAmount;
     private Date orderDate;
-    private String status; // e.g., Pending, Delivered
+    private String status;
 
-    // Constructors
-    public Order() {}
-
-    public Order(String userId, List<String> itemIds, double totalAmount, Date orderDate, String status) {
-        this.userId = userId;
+    public Order(String id, String userEmail, List<String> itemIds, double totalAmount, Date orderDate, String status) {
+        this.id = id;
+        this.userEmail = userEmail;
         this.itemIds = itemIds;
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
         this.status = status;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -39,12 +35,12 @@ public class Order {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public List<String> getItemIds() {
@@ -78,5 +74,5 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
+// Constructors, getters, and setters
 }
-
