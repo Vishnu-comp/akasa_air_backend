@@ -11,14 +11,14 @@ import java.util.List;
 public class OrderService {
 
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderRepository orderRepository; // Inject your repository
 
-    public Order checkout(Order order) {
-        return orderRepository.save(order);
+    public Order createOrder(Order order) {
+        return orderRepository.save(order); // Save the order in the database
     }
 
     public List<Order> getOrdersByUserEmail(String email) {
-        return orderRepository.findByUserEmail(email);
+        return orderRepository.findByUserEmail(email); // Implement this method in your repository
     }
 
     public Order updateOrderStatus(String id, String status) {

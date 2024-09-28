@@ -1,4 +1,3 @@
-// File: Order.java
 package com.akasa_air_Vishnu_Nair.akasa_air_backend.model;
 
 import org.springframework.data.annotation.Id;
@@ -18,6 +17,11 @@ public class Order {
     private Date orderDate;
     private String status;
 
+    // Default constructor (required for Spring Data)
+    public Order() {
+    }
+
+    // Parameterized constructor
     public Order(String id, String userEmail, List<String> itemIds, double totalAmount, Date orderDate, String status) {
         this.id = id;
         this.userEmail = userEmail;
@@ -27,6 +31,7 @@ public class Order {
         this.status = status;
     }
 
+    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -74,5 +79,17 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
-// Constructors, getters, and setters
+
+    // Override toString() for better logging/debugging
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", itemIds=" + itemIds +
+                ", totalAmount=" + totalAmount +
+                ", orderDate=" + orderDate +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
