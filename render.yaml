@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: akasa-air-backend
+    env: docker
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/*.jar
