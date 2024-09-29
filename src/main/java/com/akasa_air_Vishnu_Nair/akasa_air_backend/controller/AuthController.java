@@ -47,4 +47,10 @@ public class AuthController {
         LoginResponse loginResponse = new LoginResponse(userDetails.getUsername(), jwt);
         return ResponseEntity.ok(loginResponse);
     }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
+        boolean emailExists = authService.isEmailAlreadyRegistered(email);
+        return ResponseEntity.ok(emailExists);
+    }
 }

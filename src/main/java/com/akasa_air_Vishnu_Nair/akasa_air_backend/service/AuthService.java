@@ -17,7 +17,16 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // Check if email is already registered
+    public boolean isEmailAlreadyRegistered(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+
     public User registerUser(UserDTO userDTO) {
+        if (isEmailAlreadyRegistered(userDTO.getEmail())) {
+            throw new RuntimeException("Email is already in use.");
+        }
+
         User user = new User();
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
